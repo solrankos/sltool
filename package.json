@@ -2,6 +2,13 @@
 	"name": "sltool",
 	"version": 0.1,
 	"description": "Get information about the latest arivals",
-	"scripts"
-
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+		},
+	"author": "Oscar Karlsson",
+	"license": "GPL-3",
+	"preferGlobal": true,
+	"bin": {
+		"sl": "index.js"
+	}
 }
