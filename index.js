@@ -3,6 +3,9 @@
 // modules
 var request = require('request')
 var Spinner = require('cli-spinner').Spinner
+var chalk = require('chalk')
+var _ = require('underscore')
+
 
 // arguments
 var arg = process.argv.slice(2)
@@ -28,7 +31,7 @@ function handleError(message, debugData) {
 	if (mDebug && debugData) {
 		console.error("Debug data:\n" + debugData)
 	}
-	console.error(message)
+	console.error(chalk.red("ERR!") + " " + message)
 	var cleanConsle = true
 	mSpinner.stop(cleanConsle)
 }
@@ -90,7 +93,7 @@ function getRealtimeInfo(siteID) {
 		}
 
 		if (obj.ResponseData.Metros.length == 0) {
-			handleError('No metros', obj)
+			handleError('No metros for', obj)
 			return
 		}
 
@@ -98,53 +101,48 @@ function getRealtimeInfo(siteID) {
 	})
 }
 
-// GroupOfLine Tunnelbanans röda linje
-// GroupOfLineId
-// JourneyDirection
-
-// Slussen
-// 
-// Tunnelbanans gröna linje
-// --------------------------
-//   Vällingby             Nu
-//   Hässelby strand    4 min
-//   Odenplan           9 min
-//
-//   Hagsätra           1 min
-//   Skarpnäck          4 min
-//   Hagsätra           8 min
-//
-// Tunnelbanans röda linje
-// --------------------------
-//   Mörby centrum      2 min
-//   Ropsten            6 min
-//   Mörby centrum     13 min
-//
-//   Fruängen           7 min
-//   Norsborg          10 min
-//   Norsborg          19 min
-
 function printRealTimeInformation(metroArray) {
-	//groupByGroupOfLine(metroArray)
-	if (mDebug) {
-		console.log(metroArray)
-	}
-	console.log( )
+	console.log(" ")
 	console.log(metroArray[0].StopAreaName)
-	console.log(getDivider())
+	console.log(" ")
 
-	metroArray.forEach(function(metro) {
-		var whitespace = getWhitespaceFromMetro(metro)
-		console.log(metro.SafeDestinationName + whitespace + metro.DisplayTime)
-	})
+	var groupOfLineGroups = groupByGroupOfLine(metroArray)
+
+	for (var key in groupOfLineGroups) {
+		var groupOfLine = groupOfLineGroups[key]
+		
+		
+		console.log(groupOfLine[0].GroupOfLine)
+		console.log(getDivider())
+		
+		var journeyDirectionGroups = groupByJournyDirection(groupOfLine)
+
+		for (var key in journeyDirectionGroups) {
+			var journyDirectionGroup = journeyDirectionGroups[key]
+
+			journyDirectionGroup.forEach(function(metro) {
+	 			var whitespace = getWhitespaceFromMetro(metro)
+	 			console.log(metro.SafeDestinationName + whitespace + metro.DisplayTime)
+	 		})
+
+	 		console.log(" ")
+		}
+	}
 }
 
-// function groupByGroupOfLine(metroArray) {
-// 	var groups = metroArray.groupBy(metroArray, function(obj) {
-// 		return obj.GroupOfLineId
-// 	})
-// 	console.log(groups)
-// }
+function groupByGroupOfLine(metroArray) {
+	var groups = _.groupBy(metroArray, function(metro) {
+		return metro.GroupOfLineId
+	})
+	return groups
+}
+
+function groupByJournyDirection(groupOfLine) {
+	var groups = _.groupBy(groupOfLine, function(metro) {
+		return metro.JourneyDirection
+	})
+	return groups
+}
 
 function getDivider() {
 	var divider = ""
