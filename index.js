@@ -1,25 +1,62 @@
 #! /usr/bin/env node
 
 // modules
-var request = require('request')
-var Spinner = require('cli-spinner').Spinner
-var chalk = require('chalk')
-var _ = require('underscore')
+const request = require('request')
+const Spinner = require('cli-spinner').Spinner
+const chalk = require('chalk')
+const _ = require('underscore')
 
-
-// arguments
-var arg = process.argv.slice(2)
-
-// member variables
-var mDebug = false
-var mAPIKeys = {
+// Globals
+const gDebug = true
+const gAPIKeys = {
 	SLPlatsupplag: '97b236dee34c4412a743f61af4dba37f',
 	SLRealtid3: '80d16ebb1c2a4bc3a72e9cd9be029b99'
 }
-var mTotalNumberOfCharacters = 35
-var mSpinner = getSpinner()
+const gTotalNumberOfCharacters = 35
+const gSpinner = getSpinner()
 
-getSubwaySites(arg)
+var arguments = process.argv.slice(2)
+
+parseArguments(arguments)
+
+function parseArguments(arguments) {
+	if (arguments.length == 0 || arrayContainKeys(arguments, ['-h', '--help'])) {
+		printHelp()
+	} else {
+		getSubwaySites(arguments)
+	}
+}
+
+function arrayContainKeys(arrayToSearch, arrayOfKeys) {
+	var match = false;
+
+	arrayToSearch.forEach(function(object) {
+		arrayOfKeys.forEach(function(key) {
+			if (object == key) {
+				match = true
+			}
+		})	
+	})
+
+	return match
+}
+
+function printHelp() {
+	const helpString = "\n"
+	.concat("SLTool - Realtime station information\n")
+	.concat("\n")
+	.concat("USAGE\n")
+	.concat("	sl [SEARCHSTRING]\n")
+	.concat("\n")
+	.concat("EXAMPLE\n")
+	.concat("	#Get realtime information on slussen\n")
+	.concat("	$ sl slussen\n")
+	.concat("\n")
+	.concat("	#Also works with shorter search string\n")
+	.concat("	$ sl slu\n")
+
+	console.log(helpString)
+}
 
 function getSpinner() {
 	var spinner = new Spinner()
@@ -28,19 +65,19 @@ function getSpinner() {
 }
 
 function handleError(message, debugData) {
-	if (mDebug && debugData) {
+	if (gDebug && debugData) {
 		console.error("Debug data:\n" + debugData)
 	}
 	console.error(chalk.red("ERR!") + " " + message)
 	var cleanConsle = true
-	mSpinner.stop(cleanConsle)
+	gSpinner.stop(cleanConsle)
 }
 
 function getSubwaySites(searchString) {
-	mSpinner.start()
+	gSpinner.start()
 
 	var getSubwaySitesEndpoint = 'https://api.sl.se/api2/typeahead.json'
-	.concat('?key=' + mAPIKeys.SLPlatsupplag)
+	.concat('?key=' + gAPIKeys.SLPlatsupplag)
 	.concat('&searchstring=' + searchString)
 	.concat('&maxResults=1')
 
@@ -69,12 +106,12 @@ function getSubwaySites(searchString) {
 
 function getRealtimeInfo(siteID) {
 	var getRealtimeInfoEndpoint = 'https://api.sl.se/api2/realtimedepartures.json'
-	.concat('?key=' + mAPIKeys.SLRealtid3)
+	.concat('?key=' + gAPIKeys.SLRealtid3)
 	.concat('&siteid=' + siteID)
 	.concat('&timewindow=30')
 
 	request(getRealtimeInfoEndpoint, function(error, res, body) {
-		mSpinner.stop(true)
+		gSpinner.stop(true)
 
 		if (error) {
 			handleError(error)
@@ -147,7 +184,7 @@ function groupByJournyDirection(groupOfLine) {
 function getDivider() {
 	var divider = ""
 
-	for (i = 0; i < mTotalNumberOfCharacters; i++) {
+	for (i = 0; i < gTotalNumberOfCharacters; i++) {
 		divider = divider + "-"
 	}
 
@@ -168,6 +205,6 @@ function getWhitespaceFromMetro(metro) {
 function getWhiteSpaceCountFromMetro(metro) {
 	string1 = metro.SafeDestinationName
 	string2 = metro.DisplayTime
-	return mTotalNumberOfCharacters - (string1.length + string2.length)
+	return gTotalNumberOfCharacters - (string1.length + string2.length)
 }
 
