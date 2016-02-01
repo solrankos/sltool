@@ -1,7 +1,7 @@
 {
 	"name": "sltool",
-	"version": "0.1.0",
-	"description": "Get information about the latest arivals",
+	"version": "1.0.0",
+	"description": "Get realtime information on stockholms subway stations",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 		},
@@ -21,5 +21,16 @@
 		"chalk": "1.1.1",
 		"underscore": "1.8.3",
 		"prompt": "0.2.14"
-	}
+	},
+	"keywords": [
+		"cli",
+		"subway",
+		"stockholm",
+		"sl",
+		"terminal",
+		"command line",
+		"command line tool",
+		"transit",
+		"realtime"
+	]
 }
