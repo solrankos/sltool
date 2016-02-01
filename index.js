@@ -6,6 +6,7 @@ var request = require('request');
 var Spinner = require('cli-spinner').Spinner;
 var chalk = require('chalk');
 var _ = require('underscore');
+var prompt = require('prompt');
 
 // Globals
 var gDebug = true;
@@ -103,7 +104,7 @@ function getSubwaySites(searchString) {
         var sites = obj.ResponseData;
 
         if (sites.length > 1) {
-            promtSearchResults(sites);
+            printSearchResults(sites);
         } else {
             var site = obj.ResponseData[0];
 
@@ -115,13 +116,36 @@ function getSubwaySites(searchString) {
     })
 }
 
-function promtSearchResults(searchResults) {
+function printSearchResults(searchResults) {
     console.log("");
 
     for (var i = 0; i < searchResults.length; i++) {
         var site = searchResults[i];
         console.log(i + '. ' + site.Name);
     }
+
+    promptUserForSearchResults(searchResults);
+}
+
+function promptUserForSearchResults(searchResults) {
+    prompt.message = '';
+    prompt.delimiter = '';
+    prompt.start();
+    prompt.get({
+        properties: {
+            option: {
+                description: '>'.green
+            }
+        }
+    }, function(err, result) {
+        var option = result.option;
+        if (option < searchResults.length && option >= 0) {
+            var site = searchResults[option];
+            getRealtimeInfo(site.SiteId);
+        } else {
+            handleError('Wrong number', null);
+        }
+    });
 }
 
 function getRealtimeInfo(siteID) {
