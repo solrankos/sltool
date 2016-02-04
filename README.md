@@ -1,5 +1,5 @@
 # sltool
-A CLI for Stockholm transit
+A CLI for getting realtime information on Stockholms subway stations.
 
 ## Install
 
@@ -9,16 +9,24 @@ $ npm install -g sltool
 
 ## Usage
 
-```
+Search for realtime information on Slussen.
 
 ```
+$ sl slussen
+```
 
+Display help.
 
-## Related
+```
+$ sl
+```
 
-- [npm-name-cli](https://github.com/sindresorhus/npm-name-cli) - CLI for this module
+or.
 
+```
+$ sl -h
+```
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © Oscar Karlsson

@@ -6,7 +6,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 		},
 	"author": "Oscar Karlsson",
-	"license": "GPL-3.0",
+	"license": "MIT",
 	"preferGlobal": true,
 	"bin": {
 		"sl": "index.js"
