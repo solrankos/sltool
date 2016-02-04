@@ -106,7 +106,8 @@ function promptUserForSearchResults(searchResults) {
             var site = searchResults[option];
             getRealtimeInfo(site);
         } else {
-            handleError('Wrong number', null);
+            printer.printUserInfo("You need to provide a valid number.");
+            promptUserForSearchResults(searchResults);
         }
     });
 }
