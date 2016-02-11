@@ -9,7 +9,10 @@
 	"license": "MIT",
 	"preferGlobal": true,
 	"bin": {
-		"sl": "index.js"
+		"sl": "bin/sltool.js"
+	},
+	"directories": {
+  		"man": "doc/man"
 	},
 	"repository": {
   		"type": "git",

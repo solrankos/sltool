@@ -8,8 +8,8 @@ var chalk = require('chalk');
 var prompt = require('prompt');
 
 // internal modules
-var printer = require('./printer.js');
-var globals = require('./globals.js');
+var printer = require('./../lib/printer.js');
+var globals = require('./../lib/globals.js');
 
 // globals
 var gAPIKeys = {
