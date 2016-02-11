@@ -1,6 +1,6 @@
 {
 	"name": "sltool",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "sltool is a lightweight CLI for getting estimated time of arrival on Stockholms subways. It makes use of SL's API's for searching of subway stations and getting realtime information on a station.\nIf you find any bugs or have ideas about improvements, it would help me a great deal if you made an issue about it in the github repository @ https://github.com/solrankos/sltool.",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
