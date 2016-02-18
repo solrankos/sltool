@@ -6,6 +6,7 @@ var request = require('request');
 var Spinner = require('cli-spinner').Spinner;
 var chalk = require('chalk');
 var prompt = require('prompt');
+var version = require('version');
 
 // internal modules
 var printer = require('./../lib/printer.js');
@@ -149,6 +150,16 @@ function getRealtimeInfo(site) {
         }
 
         printer.printRealTimeInformation(site.Name ,obj.ResponseData.Metros);
+
+        getVersion();
+    });
+}
+
+function getVersion() {
+    version.fetch('sltool', function(error, version) {
+        if (!error) {
+            printer.printUserInfo("Current version is: " + version);
+        };
     });
 }
 
