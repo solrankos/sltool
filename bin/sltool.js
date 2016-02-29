@@ -8,6 +8,7 @@ var Spinner = require('cli-spinner').Spinner;
 var printer = requireInternalModule('printer');
 var prompter = requireInternalModule('prompter');
 var globals = requireInternalModule('globals');
+var helper = requireInternalModule('helpers');
 var version = requireInternalModule('version');
 var sl = requireInternalModule('sl-api');
 
@@ -22,25 +23,13 @@ var args = process.argv.slice(2);
 parseArguments(args);
 
 function parseArguments(args) {
-    if (args.length == 0 || arrayContainKeys(args, ['-h', '--help'])) {
+    if (args.length == 0 || 
+        helper.arrayContainKeys(args, ['-h', '--help'])) {
+
         printer.printHelp();
     } else {
         getInfo(args);
     }
-}
-
-function arrayContainKeys(arrayToSearch, arrayOfKeys) {
-    var match = false;
-
-    arrayToSearch.forEach(function(object) {
-        arrayOfKeys.forEach(function(key) {
-            if (object == key) {
-                match = true;
-            }
-        });
-    });
-
-    return match;
 }
 
 function getInfo(args) {
@@ -91,11 +80,4 @@ function getSpinner() {
     var spinner = new Spinner();
     spinner.setSpinnerString(0);
     return spinner;
-}
-
-function handleError(message, debugData) {
-    if (globals.debug && debugData) {
-        console.error("Debug data:\n" + debugData);
-    }
-    printer.printError(message);
 }
