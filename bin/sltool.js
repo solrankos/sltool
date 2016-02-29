@@ -52,7 +52,7 @@ function getInfo(args) {
 function promptUserForSearchResults(sites) {
     prompter.promptUserForSearchResults(sites, function(err, site) {
         if (err) {
-            printer.printUserInfo("You need to provide a valid number.");
+            printer.printUserInfo(err);
             promptUserForSearchResults(sites);
         } else {
             getRealtimeInfo(site);
