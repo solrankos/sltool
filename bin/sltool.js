@@ -64,13 +64,6 @@ function getRealtimeInfo(site) {
     sl.getRealtimeInfo(site, function(siteName, response) {
         gSpinner.stop(true)
 
-        /*
-        if (metros.length == 0) {
-            printer.printUserInfo('No metros for ' + siteName);
-            return;
-        }
-        */
-
         printer.printRealTimeInformation(siteName, response);
         version.check();
     });
