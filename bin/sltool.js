@@ -23,9 +23,7 @@ var args = process.argv.slice(2);
 parseArguments(args);
 
 function parseArguments(args) {
-    if (args.length == 0 || 
-        helper.arrayContainKeys(args, ['-h', '--help'])) {
-
+    if (args.length == 0 || helper.arrayContainKeys(args, ['-h', '--help'])) {
         printer.printHelp();
     } else {
         getInfo(args);
@@ -35,7 +33,7 @@ function parseArguments(args) {
 function getInfo(args) {
     gSpinner.start()
     
-    sl.getSubwaySites(args, function(sites) {
+    sl.getSites(args, function(sites) {
         gSpinner.stop(true);
 
         if (sites.length > 1) {
